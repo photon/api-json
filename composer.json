@@ -1,0 +1,36 @@
+{
+    "name": "photon/api-json",
+    "type": "library",
+    "description": "Views helper to create REST APIs with JSON and CORS",
+    "keywords": [
+        "photon",
+        "api",
+        "json",
+        "cors"
+    ],
+    "homepage": "http://www.photon-project.com/",
+    "license": "LGPL-2.1",
+    "authors": [
+        {
+            "name": "William MARTIN",
+            "email": "william.martin@power-lan.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Community",
+            "homepage": "https://github.com/photon/api-json/blob/master/CONTRIBUTORS.md"
+        }
+    ],
+    "require": {
+        "php" : "^7.0",
+        "photon/photon": "^2.0"
+    },
+    "require-dev": {
+      "phpunit/phpunit": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "photon\\views\\APIJson\\": "src/"
+        }
+    }
+}
