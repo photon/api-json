@@ -73,7 +73,7 @@ abstract class Rest
         }
 
         // Serialize in JSON the API output
-        if (is_array($answer) === true || $answer instanceof JsonSerializable) {
+        if (is_array($answer) === true || $answer instanceof \JsonSerializable) {
           $answer = new Response(json_encode($answer, JSON_PRETTY_PRINT), 'application/json');
           if ($this->handleCORS) {
             $answer->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
