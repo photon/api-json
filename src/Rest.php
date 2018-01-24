@@ -55,6 +55,9 @@ abstract class Rest
         catch(\Exception $e) {
             $answer = $this->handleException($e);
         }
+        catch(\Throwable $e) {
+            $answer = $this->handleThrowable($e);
+        }
 
         /*
          *  No answer to return, the API will send data later directly
@@ -89,6 +92,14 @@ abstract class Rest
      *  Overwrite this function to handle exception
      */
     protected function handleException(\Exception $e)
+    {
+      return new InternalServerError($e);
+    }
+
+    /*
+     *  Overwrite this function to handle throwable
+     */
+    protected function handleThrowable(\Throwable $e)
     {
       return new InternalServerError($e);
     }
