@@ -9,7 +9,7 @@
         "cors"
     ],
     "homepage": "http://www.photon-project.com/",
-    "license": "LGPL-2.1",
+    "license": "LGPL-2.1-or-later",
     "authors": [
         {
             "name": "William MARTIN",
@@ -35,7 +35,7 @@
         }
     },
     "scripts": {
-        "phpcs": "phpcs --standard=PSR2 src tests",
-        "phpcbf": "phpcbf --standard=PSR2 src tests"
+        "phpcs": "phpcs --standard=PSR2 src",
+        "phpcbf": "phpcbf --standard=PSR2 src"
     }
 }
