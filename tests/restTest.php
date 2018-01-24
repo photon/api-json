@@ -1,33 +1,34 @@
 <?php
 
-namespace tests\restTests;
+namespace tests;
+
 use \photon\test\TestCase;
 use \photon\test\HTTP;
 
 class MyAPI extends \photon\views\APIJson\Rest
 {
-  public function GET($request, $match)
-  {
-      return array('ok' => true, 'method' => $request->method);
-  }
+    public function GET($request, $match)
+    {
+        return array('ok' => true, 'method' => $request->method);
+    }
 
-  public function POST($request, $match)
-  {
-      return 12.3;
-  }
+    public function POST($request, $match)
+    {
+        return 12.3;
+    }
 
-  public function PUT($request, $match)
-  {
-      return new \photon\http\response\NotFound($request);
-  }
+    public function PUT($request, $match)
+    {
+        return new \photon\http\response\NotFound($request);
+    }
 
-  public function DELETE($request, $match)
-  {
-      return false;
-  }
+    public function DELETE($request, $match)
+    {
+        return false;
+    }
 }
 
-class restTests extends TestCase
+class RestTests extends TestCase
 {
     public function testKnownMethod()
     {

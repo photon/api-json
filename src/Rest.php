@@ -25,17 +25,17 @@ abstract class Rest
         $returnNotSupported = array_search($method, $available) === false;
 
         if ($returnNotSupported && $this->handleCORS && ($method === 'OPTIONS')) {
-          $ans = new Response('');
-          $ans->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
-          $ans->headers['Access-Control-Allow-Methods'] = implode(', ', $available);
-          $ans->headers['Access-Control-Allow-Headers'] = $this->corsAllowHeaders();
-          return $ans;
+            $ans = new Response('');
+            $ans->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
+            $ans->headers['Access-Control-Allow-Methods'] = implode(', ', $available);
+            $ans->headers['Access-Control-Allow-Headers'] = $this->corsAllowHeaders();
+            return $ans;
         }
 
         if ($returnNotSupported) {
-          $allow = array('HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS');
-          $allow = array_intersect($allow, $available);
-          return new NotSupported($request, $allow);
+            $allow = array('HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS');
+            $allow = array_intersect($allow, $available);
+            return new NotSupported($request, $allow);
         }
 
         // Check ACL for the requested method
@@ -51,11 +51,9 @@ abstract class Rest
         try {
             $this->init($request, $match);
             $answer = $this->{$method}($request, $match);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $answer = $this->handleException($e);
-        }
-        catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $answer = $this->handleThrowable($e);
         }
 
@@ -68,21 +66,21 @@ abstract class Rest
 
         // Direct answer, some API push a file and not JSON content
         if ($answer instanceof Response) {
-          if ($this->handleCORS) {
-            $answer->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
-          }
+            if ($this->handleCORS) {
+                $answer->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
+            }
 
-          return $answer;
+            return $answer;
         }
 
         // Serialize in JSON the API output
         if (is_array($answer) === true || $answer instanceof \JsonSerializable) {
-          $answer = new Response(json_encode($answer, JSON_PRETTY_PRINT), 'application/json');
-          if ($this->handleCORS) {
-            $answer->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
-          }
+            $answer = new Response(json_encode($answer, JSON_PRETTY_PRINT), 'application/json');
+            if ($this->handleCORS) {
+                $answer->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
+            }
 
-          return $answer;
+            return $answer;
         }
 
         return new InternalServerError(new \UnexpectedValueException);
@@ -93,7 +91,7 @@ abstract class Rest
      */
     protected function handleException(\Exception $e)
     {
-      return new InternalServerError($e);
+        return new InternalServerError($e);
     }
 
     /*
@@ -101,7 +99,7 @@ abstract class Rest
      */
     protected function handleThrowable(\Throwable $e)
     {
-      return new InternalServerError($e);
+        return new InternalServerError($e);
     }
 
     /*
@@ -109,7 +107,7 @@ abstract class Rest
      */
     protected function init($request, $match)
     {
-      date_default_timezone_set('UTC');
+        date_default_timezone_set('UTC');
     }
 
     /*
@@ -117,7 +115,7 @@ abstract class Rest
      */
     protected function corsAllowHeaders()
     {
-      return 'authorization';
+        return 'authorization';
     }
 
     /*
@@ -125,6 +123,6 @@ abstract class Rest
      */
     protected function corsAllowOrigin()
     {
-      return '*';
+        return '*';
     }
 }
