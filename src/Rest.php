@@ -5,6 +5,7 @@ namespace photon\views\APIJson;
 use photon\http\Response;
 use photon\http\response\InternalServerError;
 use photon\http\response\NotSupported;
+use photon\http\response\BadRequest;
 
 /*
  *  Generic router for JSON REST API
@@ -124,5 +125,27 @@ abstract class Rest
     protected function corsAllowOrigin()
     {
         return '*';
+    }
+
+    /*
+     *  Helper to send form errors
+     */
+    protected function renderFormErrors($form)
+    {
+      // Ensure the isValid is called
+        $valid = $form->isValid();
+
+        $data = array();
+        foreach ($form as $key => $field) {
+            $data[$key] = $form->data[$key] ?? '';
+        }
+
+        $br = new BadRequest;
+        $br->content = json_encode(array(
+        'form' => $data,
+        'errors' => $form->errors
+        ), JSON_PRETTY_PRINT);
+
+        return $br;
     }
 }
