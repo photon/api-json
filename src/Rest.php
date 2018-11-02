@@ -4,8 +4,10 @@ namespace photon\views\APIJson;
 
 use photon\http\Response;
 use photon\http\response\InternalServerError;
+use photon\http\response\ServerErrorDebug;
 use photon\http\response\NotSupported;
 use photon\http\response\BadRequest;
+use \photon\config\Container as Conf;
 
 /*
  *  Generic router for JSON REST API
@@ -13,12 +15,15 @@ use photon\http\response\BadRequest;
 abstract class Rest
 {
     protected $handleCORS = false;
+    private $_request = null;
 
     /*
      *  Route to the view dedicated for the HTTP method
      */
     public function router($request, $match)
     {
+        $this->_request = $request;
+
         // Ensure the HTTP method exists for this API
         $returnNotSupported = false;
         $method = $request->method;
@@ -92,6 +97,10 @@ abstract class Rest
      */
     protected function handleException(\Exception $e)
     {
+        if (Conf::f('debug', false) === true) {
+            return new ServerErrorDebug($e, $this->_request);
+        }
+
         return new InternalServerError($e);
     }
 
@@ -100,6 +109,10 @@ abstract class Rest
      */
     protected function handleThrowable(\Throwable $e)
     {
+        if (Conf::f('debug', false) === true) {
+            return new ServerErrorDebug($e, $this->_request);
+        }
+
         return new InternalServerError($e);
     }
 
