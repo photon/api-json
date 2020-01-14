@@ -56,6 +56,7 @@ abstract class Rest
         // Call the method API
         try {
             $this->init($request, $match);
+            $this->hookBeforeRequest($request, $match);
             $answer = $this->{$method}($request, $match);
         } catch (\Exception $e) {
             $answer = $this->handleException($e);
@@ -75,6 +76,7 @@ abstract class Rest
             if ($this->handleCORS) {
                 $answer->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
             }
+            $this->hookAfterRequest($answer);
 
             return $answer;
         }
@@ -85,11 +87,26 @@ abstract class Rest
             if ($this->handleCORS) {
                 $answer->headers['Access-Control-Allow-Origin'] = $this->corsAllowOrigin();
             }
+            $this->hookAfterRequest($answer);
 
             return $answer;
         }
 
         return new InternalServerError(new \UnexpectedValueException);
+    }
+
+    /*
+     *  Overwrite this function to perform operation before each requests
+     */
+    protected function hookBeforeRequest($request, $match)
+    {
+    }
+
+    /*
+     *  Overwrite this function to perform operation after a response has been produced
+     */
+    protected function hookAfterRequest($response)
+    {
     }
 
     /*
