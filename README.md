@@ -1,8 +1,6 @@
 api-json
 ========
 
-[![Build Status](https://travis-ci.org/photon/api-json.svg?branch=master)](https://travis-ci.org/photon/api-json)
-
 Views helper to create REST APIs
 
 Quick start
