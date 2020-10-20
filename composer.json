@@ -34,8 +34,14 @@
             "photon\\views\\APIJson\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests/"
+        }
+    },
     "scripts": {
         "phpcs": "phpcs --standard=PSR2 src tests",
-        "phpcbf": "phpcbf --standard=PSR2 src tests"
+        "phpcbf": "phpcbf --standard=PSR2 src tests",
+        "phpunit": "phpunit -c phpunit.xml"
     }
 }

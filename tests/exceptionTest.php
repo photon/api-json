@@ -5,55 +5,6 @@ namespace tests;
 use \photon\test\TestCase;
 use \photon\test\HTTP;
 
-class CustomException extends \Exception
-{
-}
-
-class ApiForbidden extends \photon\views\APIJson\Rest
-{
-    public function GET($request, $match)
-    {
-        throw new \photon\views\APIJson\Exception\Forbidden;
-    }
-}
-
-class ApiNotFound extends \photon\views\APIJson\Rest
-{
-    public function GET($request, $match)
-    {
-        throw new \photon\views\APIJson\Exception\NotFound;
-    }
-}
-
-class ApiBadRequest extends \photon\views\APIJson\Rest
-{
-    public function GET($request, $match)
-    {
-        throw new \photon\views\APIJson\Exception\BadRequest;
-    }
-}
-
-class ApiWithoutExceptionHandler extends \photon\views\APIJson\Rest
-{
-    public function GET($request, $match)
-    {
-        throw new CustomException;
-    }
-}
-
-class ApiWithExceptionHandler extends \photon\views\APIJson\Rest
-{
-    public function GET($request, $match)
-    {
-        throw new CustomException;
-    }
-
-    protected function handleException(\Exception $e)
-    {
-        return array('ok' => false);
-    }
-}
-
 class ExceptionTests extends TestCase
 {
     public function testNoExceptionHandler()
@@ -61,7 +12,7 @@ class ExceptionTests extends TestCase
         $request = HTTP::baseRequest('GET', '/tests');
         $match = array('/tests');
 
-        $endpoint = new ApiWithoutExceptionHandler;
+        $endpoint = new usecase\ApiWithoutExceptionHandler;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(500, $response->status_code);
     }
@@ -71,7 +22,7 @@ class ExceptionTests extends TestCase
         $request = HTTP::baseRequest('GET', '/tests');
         $match = array('/tests');
 
-        $endpoint = new ApiWithExceptionHandler;
+        $endpoint = new usecase\ApiWithExceptionHandler;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(200, $response->status_code);
 
@@ -85,7 +36,7 @@ class ExceptionTests extends TestCase
         $request = HTTP::baseRequest('GET', '/tests');
         $match = array('/tests');
 
-        $endpoint = new ApiForbidden;
+        $endpoint = new usecase\ApiForbidden;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(403, $response->status_code);
     }
@@ -95,7 +46,7 @@ class ExceptionTests extends TestCase
         $request = HTTP::baseRequest('GET', '/tests');
         $match = array('/tests');
 
-        $endpoint = new ApiNotFound;
+        $endpoint = new usecase\ApiNotFound;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(404, $response->status_code);
     }
@@ -105,7 +56,7 @@ class ExceptionTests extends TestCase
         $request = HTTP::baseRequest('GET', '/tests');
         $match = array('/tests');
 
-        $endpoint = new ApiBadRequest;
+        $endpoint = new usecase\ApiBadRequest;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(400, $response->status_code);
     }

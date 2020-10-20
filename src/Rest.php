@@ -118,15 +118,15 @@ abstract class Rest
     {
         // Detect internal libs shortcut
         if ($e instanceof Exception\Forbidden) {
-          return new Forbidden;
+            return new Forbidden;
         }
 
         if ($e instanceof Exception\NotFound) {
-          return new NotFound($this->_request);
+            return new NotFound($this->_request);
         }
 
         if ($e instanceof Exception\BadRequest) {
-          return new BadRequest;
+            return new BadRequest;
         }
 
         // Generic HTTP 500

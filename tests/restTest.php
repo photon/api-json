@@ -5,29 +5,6 @@ namespace tests;
 use \photon\test\TestCase;
 use \photon\test\HTTP;
 
-class MyAPI extends \photon\views\APIJson\Rest
-{
-    public function GET($request, $match)
-    {
-        return array('ok' => true, 'method' => $request->method);
-    }
-
-    public function POST($request, $match)
-    {
-        return 12.3;
-    }
-
-    public function PUT($request, $match)
-    {
-        return new \photon\http\response\NotFound($request);
-    }
-
-    public function DELETE($request, $match)
-    {
-        return false;
-    }
-}
-
 class RestTests extends TestCase
 {
     public function testKnownMethod()
@@ -35,7 +12,7 @@ class RestTests extends TestCase
         $request = HTTP::baseRequest('GET', '/tests');
         $match = array('/tests');
 
-        $endpoint = new MyAPI;
+        $endpoint = new usecase\MyApi;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(200, $response->status_code);
 
@@ -50,7 +27,7 @@ class RestTests extends TestCase
         $request = HTTP::baseRequest('POST', '/tests');
         $match = array('/tests');
 
-        $endpoint = new MyAPI;
+        $endpoint = new usecase\MyApi;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(500, $response->status_code);
     }
@@ -60,7 +37,7 @@ class RestTests extends TestCase
         $request = HTTP::baseRequest('PUT', '/tests');
         $match = array('/tests');
 
-        $endpoint = new MyAPI;
+        $endpoint = new usecase\MyApi;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(404, $response->status_code);
     }
@@ -70,7 +47,7 @@ class RestTests extends TestCase
         $request = HTTP::baseRequest('DELETE', '/tests');
         $match = array('/tests');
 
-        $endpoint = new MyAPI;
+        $endpoint = new usecase\MyApi;
         $response = $endpoint->router($request, $match);
         $this->assertEquals(false, $response);
     }
