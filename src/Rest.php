@@ -7,6 +7,8 @@ use photon\http\response\InternalServerError;
 use photon\http\response\ServerErrorDebug;
 use photon\http\response\NotSupported;
 use photon\http\response\BadRequest;
+use photon\http\response\Forbidden;
+use photon\http\response\NotFound;
 use \photon\config\Container as Conf;
 
 /*
@@ -114,10 +116,23 @@ abstract class Rest
      */
     protected function handleException(\Exception $e)
     {
+        // Detect internal libs shortcut
+        if ($e instanceof Exception\Forbidden) {
+          return new Forbidden;
+        }
+
+        if ($e instanceof Exception\NotFound) {
+          return new NotFound($this->_request);
+        }
+
+        if ($e instanceof Exception\BadRequest) {
+          return new BadRequest;
+        }
+
+        // Generic HTTP 500
         if (Conf::f('debug', false) === true) {
             return new ServerErrorDebug($e, $this->_request);
         }
-
         return new InternalServerError($e);
     }
 
