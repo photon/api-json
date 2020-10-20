@@ -17,14 +17,14 @@ use \photon\config\Container as Conf;
 abstract class Rest
 {
     protected $handleCORS = false;
-    private $_request = null;
+    protected $request = null;
 
     /*
      *  Route to the view dedicated for the HTTP method
      */
     public function router($request, $match)
     {
-        $this->_request = $request;
+        $this->request = $request;
 
         // Ensure the HTTP method exists for this API
         $returnNotSupported = false;
@@ -122,7 +122,7 @@ abstract class Rest
         }
 
         if ($e instanceof Exception\NotFound) {
-            return new NotFound($this->_request);
+            return new NotFound($this->request);
         }
 
         if ($e instanceof Exception\BadRequest) {
@@ -131,7 +131,7 @@ abstract class Rest
 
         // Generic HTTP 500
         if (Conf::f('debug', false) === true) {
-            return new ServerErrorDebug($e, $this->_request);
+            return new ServerErrorDebug($e, $this->request);
         }
         return new InternalServerError($e);
     }
@@ -142,7 +142,7 @@ abstract class Rest
     protected function handleThrowable(\Throwable $e)
     {
         if (Conf::f('debug', false) === true) {
-            return new ServerErrorDebug($e, $this->_request);
+            return new ServerErrorDebug($e, $this->request);
         }
 
         return new InternalServerError($e);
